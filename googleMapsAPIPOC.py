@@ -3,6 +3,8 @@
 import googlemaps 
 import gmaps
 import csv
+import pickle 
+
 
 from datetime import datetime
 from googleplaces import GooglePlaces, types, lang
@@ -184,7 +186,7 @@ def printNearbySearchDetails(location, waypoint, radius, types=None, keyword=Non
 ######## 1 END GENERATING NEARBY LOCATIONS ##############
 
 ######## 4 BEGINNING GENERATING DIRECTIONS ##############
-def generateSearchResults(start_addr, end_addr, filename 
+def generateSearchResults(start_addr, end_addr, filename ,
 						  keyword=None, radius=10000, 
 						  types=["museum"], rankby='prominence'):
 	"""
@@ -258,7 +260,12 @@ def generateSearchResults(start_addr, end_addr, filename
 	print("Number of waypoints: ", waypoints)	
 	print("There are {} results".format(result_count))
 
-	with open('placesPath.csv','w') as f:
+
+	# If you wanna save results dump em in a pickle
+	# with open('gapiPathPickle', 'wb') as f:
+	# 	pickle.dump(rst, f )
+
+	with open(filename,'w') as f:
 		dw = csv.DictWriter(f,rst[0].keys())
 		dw.writeheader()
 		dw.writerows(rst)
@@ -268,4 +275,4 @@ def generateSearchResults(start_addr, end_addr, filename
 start_addr = "Ithaca, NY"
 end_addr   = "17 Wakefield Court, Shrewsbury NJ"
 
-generateSearchResults(start_addr, end_addr, pathData.csv)
+generateSearchResults(start_addr, end_addr, "pathData.csv")
