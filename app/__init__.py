@@ -22,6 +22,7 @@ from app.accounts import accounts as accounts
 app.register_blueprint(accounts)
 from app.irsystem import irsystem as irsystem
 app.register_blueprint(irsystem)
+# app.add_template_filter(googlemap_js)
 
 # Initialize app w/SocketIO
 socketio.init_app(app)
