@@ -2,8 +2,6 @@ from . import *
 from app.irsystem.models.helpers import *
 from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
 
-from googleplaces import GooglePlaces, types, lang
-
 project_name = "DeTour Guide"
 net_id = "Josh Even (jre83), Josh Sones (js2572), Adomas Hassan (ah667), Jesse Salazar (js2928), Luis Verde (lev27)"
 
