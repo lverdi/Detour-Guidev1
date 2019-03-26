@@ -41,6 +41,7 @@ def getNearbySearchDetails(location, waypoint, radius, types=None, keyword=None,
 	"""
 	Generates details of places nearby your location
 
+
 	Args:
         location -- A human readable location, e.g 'London, England' (default None)
         waypoing -- tuple containing lat long of the waypoint used for nearby search
@@ -188,7 +189,7 @@ def getNearbySearchDetails(location, waypoint, radius, types=None, keyword=None,
 ######## 4 BEGINNING GENERATING DIRECTIONS ##############
 def generateSearchResults(start_addr, end_addr, filename ,
 						  keyword=None, radius=10000, 
-						  types=["museum"], rankby='prominence'):
+						  types=None, rankby='prominence'):
 	"""
 	Generates nearby search results every 30 miles along a given route
 	
@@ -237,12 +238,17 @@ def generateSearchResults(start_addr, end_addr, filename ,
 	waypoints = [] # tuples of (lat, lng)
 	polylines = [] # Array of polylines -- can be used for display if we like
 
+	# TODO: Should try to include the start and end locations every time we perform a nearby_search
+	#		So while checking total_distance - prev_distance we also should just automatically add the first 
+	# 		and last waypoint
 	for entry in waypoint_dict:
 		total_distance += entry["distance"]["value"]
 		total_duration += entry["duration"]["value"]
 
 		# Only include waypoints every 20-30 miles
-		if total_distance - prev_distance > 45000: 
+		# TODO: the number of waypoints should be constant and should be based on overall
+		#		trip distance
+		if total_distance - prev_distance > 10000: 
 			lat = entry["start_location"]["lat"]
 			lng = entry["start_location"]["lng"]
 			waypoints.append((lat, lng))
@@ -265,14 +271,17 @@ def generateSearchResults(start_addr, end_addr, filename ,
 	# with open('gapiPathPickle', 'wb') as f:
 	# 	pickle.dump(rst, f )
 
-	with open(filename,'w') as f:
-		dw = csv.DictWriter(f,rst[0].keys())
-		dw.writeheader()
-		dw.writerows(rst)
-	return rst
+	# with open(filename,'w') as f:
+	# 	dw = csv.DictWriter(f,rst[0].keys())
+	# 	dw.writeheader()
+	# 	dw.writerows(rst)
+	# return rst
 
 
-start_addr = "Ithaca, NY"
-end_addr   = "17 Wakefield Court, Shrewsbury NJ"
+if __name__ == '__main__':
+	
+	start_addr = "Jackson, NJ"
+	end_addr   = "17 Wakefield Court, Shrewsbury NJ"
 
-generateSearchResults(start_addr, end_addr, "pathData.csv")
+	# Uncomment this to run the file
+	# generateSearchResults(start_addr, end_addr, "pathData.csv", keyword="adventure")
