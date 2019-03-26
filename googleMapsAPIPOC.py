@@ -37,7 +37,7 @@ def computeDistanceLatLong(lat1, lon1, lat2, lon2):
 	return distance
 
 ######## 1 BEGINNING GENERATING NEARBY LOCATIONS ##############
-def printNearbySearchDetails(location, waypoint, radius, types=None, keyword=None, rankby='prominence'):
+def getNearbySearchDetails(location, waypoint, radius, types=None, keyword=None, rankby='prominence'):
 	"""
 	Generates details of places nearby your location
 
@@ -253,7 +253,7 @@ def generateSearchResults(start_addr, end_addr, filename ,
 
 			# TODO: INCLUDE ARGUMENT THAT TAKES WAYPOINT LAT LNG AND COMPUTES DISTANCE FROM
 			# 		THAT WAYPOINT TO THE PATH
-			rst = rst + printNearbySearchDetails(location, (lat,lng), radius, types, keyword, rankby)
+			rst = rst + getNearbySearchDetails(location, (lat,lng), radius, types, keyword, rankby)
 		
 		polylines.append(entry["polyline"]["points"])
 
