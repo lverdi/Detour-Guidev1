@@ -1,4 +1,3 @@
-
 var directionsRenderer;
 var directionsService;
 var coords = [];
@@ -20,14 +19,22 @@ function initMap() {
       center: origin
     });
     directionsRenderer.setMap(map);
-    directionsRenderer.setOptions({ preserveViewport : false });
     directionsService.route({
       origin: origin,
       destination: destination,
       travelMode: "DRIVING"
-    }, function(response, status) {
+    }, function(response, status) { 
       if (status == 'OK') {
         directionsRenderer.setDirections(response);
+        var tt = 0;
+        var td = 0;
+        response["routes"][0]["legs"].forEach(function(leg, i) {
+          tt += leg["duration"]["value"];
+          td += leg["distance"]["value"];
+        })
+        document.getElementById("time").innerHTML = "Total time : " + (tt / 3600).toFixed(2) + " hours"
+        document.getElementById("distance").innerHTML = "Total distance : " + (td / 1609.34).toFixed(1) + " miles"
+
       } else if (status == 'ZERO_RESULTS'){ 
         // catch error
         console.log("There are no results for this route.")
@@ -37,22 +44,35 @@ function initMap() {
     });
 }
 
-function updateMap(lat, long) {
-  console.log(lat + " " + long);
-  var mapElement = document.getElementById('map');
-  directionsService.route({
-    origin: origin,
-    destination: destination,
-    waypoints: [{
+function updateMap(lat=null, long=null) {
+  if (lat == null && long == null) {
+    // Reset button clicked
+    wypts = []
+  } else {
+    wypts = [{
       location : {
         lat : lat,
         lng : long
       }, 
       stopover : true
-    }],
+    }]
+  }
+  var mapElement = document.getElementById('map');
+  directionsService.route({
+    origin: origin,
+    destination: destination,
+    waypoints: wypts,
     travelMode: "DRIVING"
   }, function(response, status) {
     if (status == 'OK') {
+      var tt = 0;
+        var td = 0;
+        response["routes"][0]["legs"].forEach(function(leg, i) {
+          tt += leg["duration"]["value"];
+          td += leg["distance"]["value"];
+        })
+        document.getElementById("time").innerHTML = "Total time : " + (tt / 3600).toFixed(2) + " hours"
+        document.getElementById("distance").innerHTML = "Total distance : " + (td / 1609.34).toFixed(1) + " miles"
       directionsRenderer.setDirections(response);
     } else {
       window.alert('Directions request failed due to ' + status);

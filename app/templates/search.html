@@ -30,6 +30,8 @@
         <div class="centered">
         {% if data and results %}
             <h1>{{output_message}}</h1>
+            <h3 id="time"></h3>
+            <h3 id="distance"></h3>
             {% for d in data %}  
                 <script>
                     coords.push(
@@ -55,6 +57,8 @@
                     </tr>
                 {% endfor %}
             </table>
+            <button id="reset" class="btn btn-info" onclick="updateMap()"> Reset Map </button>
+
         </div>
         {% endif %}
     </body>
