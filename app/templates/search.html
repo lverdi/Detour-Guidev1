@@ -38,7 +38,7 @@
             <button type="submit" class="btn btn-info"> Go! </button>
         </form>
         <div class="centered">
-        {% if data %}
+        {% if data and results %}
             <h1>{{output_message}}</h1>
             {% for d in data %}
                 <script>
@@ -53,10 +53,20 @@
             <script async defer
                 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4UtBsSLm1kkkmYh7zONJ3iv6_4a2j0Og&callback=initMap">
             </script>
-        {% endif %}
         </div>
-        <div id="map"></div>
-        <div id="results"></div>
+        <div class="container">
+            <div id="map"></div>
+            <table id="results">
+                {% for r in results %}  
+                    <tr onclick="updateMap(parseFloat('{{ r.lat }}'), parseFloat('{{ r.long }}'))">
+                        <td>{{ r.name }}</td>
+                        <td>{{ r.lat }}</td>
+                        <td>{{ r.long }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
     </body>
 
 </html>
