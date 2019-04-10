@@ -2,6 +2,7 @@
     <head>
         <link rel="stylesheet" href="/static/bootstrap.min.css">
         <link rel="stylesheet" href="/static/main.css">
+        <script src="/static/js/maps.js"></script>
     </head>
     <body>
         <div class="topcorner">
@@ -10,31 +11,42 @@
         </div>
         <form class="form-inline global-search">
 
-<h1 style="font-size: 55px; font-family:Futura; color: #4285F4">
-                C
-                <font color=#EA4335>S</font>
-                <font color=#FBBC05>4</font>
-                3
-                <font color=#34A853>0</font>
-                <font color=#EA4335>0</font>
+            <h1 style="font-size: 55px; font-family:Futura; color: #4285F4">
+                {{ name }}
             </h1>
             
             <br><br>
             
             <div class="form-group">
-                <input id="input" type="text" name="search" class="form-control" placeholder="Your Input">
+                <input id="input" type="text" name="origin" class="form-control" placeholder="Origin">
             </div>
+            <br>
+            <div class="form-group">
+                <input id="input" type="text" name="dest" class="form-control" placeholder="Destination">
+            </div>
+            <br>
             <button type="submit" class="btn btn-info"> Go! </button>
         </form>
-        <form class="form-inline global-search">
+        <div class="centered">
         {% if data %}
             <h1>{{output_message}}</h1>
             {% for d in data %}  
-                <br>
-                <p>{{d}}</p>
+                <script>
+                    coords.push(
+                        {
+                            lat : parseFloat('{{ d[0] }}'),
+                            lng : parseFloat('{{ d[1] }}')
+                        }
+                    )
+                </script>
             {% endfor %}
+            <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4UtBsSLm1kkkmYh7zONJ3iv6_4a2j0Og&callback=initMap">
+            </script>
         {% endif %}
-        </form>
+        </div>
+        <div id="map"></div>
+        <div id="results"></div>
     </body>
 
 </html>
