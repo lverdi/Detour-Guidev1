@@ -53,3 +53,8 @@ color: #4285F4;
     width: 400px;
     height: 400px;
 }
+
+.category{
+  float: left;
+  text-align: left;
+}

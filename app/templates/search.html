@@ -30,10 +30,16 @@
             </div>
             <br>
             <br class ="form-group">
-              <input type="checkbox" name="category" value="amusement_park"> Amusement Park<br>
-              <input type="checkbox" name="category" value="aquarium"> Aquarium<br>
-              <input type="checkbox" name="category" value="art_gallery"> Art Gallery<br>
-              <input type="checkbox" name="category" value="campground"> Campground<br>
+              <input class = "category" type="checkbox" name="category" value="amusement_park"> Amusement Park<br>
+              <input class = "category" type="checkbox" name="category" value="aquarium"> Aquarium<br>
+              <input class = "category" type="checkbox" name="category" value="art_gallery"> Art Gallery<br>
+              <input class = "category" type="checkbox" name="category" value="campground"> Campground<br>
+              <input class = "category" type="checkbox" name="category" value="casino"> Casino<br>
+              <input class = "category" type="checkbox" name="category" value="museum"> Museum<br>
+              <input class = "category" type="checkbox" name="category" value="park"> Park<br>
+              <input class = "category" type="checkbox" name="category" value="restaurant"> Restaurant<br>
+              <input class = "category" type="checkbox" name="category" value="stadium"> Stadium<br>
+              <input class = "category" type="checkbox" name="category" value="zoo"> Zoo<br>
             <br>
             <button type="submit" class="btn btn-info"> Go! </button>
         </form>
@@ -57,7 +63,7 @@
         <div class="container">
             <div id="map"></div>
             <table id="results">
-                {% for r in results %}  
+                {% for r in results %}
                     <tr onclick="updateMap(parseFloat('{{ r.lat }}'), parseFloat('{{ r.long }}'))">
                         <td>{{ r.name }}</td>
                         <td>{{ r.lat }}</td>
