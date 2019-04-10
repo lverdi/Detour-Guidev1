@@ -1,7 +1,11 @@
+<!DOCTYPE html>
+
 <html>
     <head>
+        <meta charset = "UTF-8">
         <link rel="stylesheet" href="/static/bootstrap.min.css">
         <link rel="stylesheet" href="/static/main.css">
+        <title>De-Tour Guide</title>
         <script src="/static/js/maps.js"></script>
     </head>
     <body>
@@ -14,23 +18,29 @@
             <h1 style="font-size: 55px; font-family:Futura; color: #4285F4">
                 {{ name }}
             </h1>
-            
+
             <br><br>
-            
+
             <div class="form-group">
-                <input id="input" type="text" name="origin" class="form-control" placeholder="Origin">
+                <input type="text" name="origin" class="form-control input" placeholder="Origin">
             </div>
             <br>
             <div class="form-group">
-                <input id="input" type="text" name="dest" class="form-control" placeholder="Destination">
+                <input type="text" name="dest" class="form-control input" placeholder="Destination">
             </div>
+            <br>
+            <br class ="form-group">
+              <input type="checkbox" name="category" value="amusement_park"> Amusement Park<br>
+              <input type="checkbox" name="category" value="aquarium"> Aquarium<br>
+              <input type="checkbox" name="category" value="art_gallery"> Art Gallery<br>
+              <input type="checkbox" name="category" value="campground"> Campground<br>
             <br>
             <button type="submit" class="btn btn-info"> Go! </button>
         </form>
         <div class="centered">
         {% if data %}
             <h1>{{output_message}}</h1>
-            {% for d in data %}  
+            {% for d in data %}
                 <script>
                     coords.push(
                         {
