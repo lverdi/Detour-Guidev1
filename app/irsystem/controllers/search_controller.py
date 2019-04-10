@@ -1,6 +1,7 @@
 from . import *  
 from app.irsystem.models.helpers import *
 from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
+from app.irsystem import googleMapsAPIPOC 
 
 import googlemaps 
 
@@ -28,17 +29,8 @@ def search():
 		output_message = "Your search: " + origin + " to " + destination
 		data = getLatLong(origin, destination)
 		# this is where the results get populated in
-		test1 = {
-			"lat" : 42.453,
-			"long" : -76.474,
-			"name" : "Cornell University",
-		}
-		test2 = {
-			"lat" : 39.9522,
-			"long" : -75.193,
-			"name" : "University of Pennsylvania",
-		}
-		results = [ test1, test2 ]
+		print("getting results")
+		results = googleMapsAPIPOC.generateSearchResults(origin, destination)
 
 	return render_template('search.html', name=project_name, netid=net_id, output_message=output_message, data=data, results=results)
 
