@@ -55,6 +55,5 @@ color: #4285F4;
 }
 
 .category{
-  float: left;
-  text-align: left;
+  color: red;
 }
