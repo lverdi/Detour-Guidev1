@@ -38,8 +38,18 @@ border: none
 color: #4285F4;
 }
 
+.container {
+    display: flex;
+    width: 90%;
+}
+
 #map {
     margin: 0 auto;
+    width: 400px;
+    height: 400px;
+}
+
+#results {
     width: 400px;
     height: 400px;
 }
