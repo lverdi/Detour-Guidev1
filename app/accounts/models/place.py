@@ -16,7 +16,7 @@ class Place(Base):
   ratings         = db.Column(db.Float, nullable=False)
   types           = db.Column(sqlalchemy.types.ARRAY(db.String(128)))
   # (Josh): @Sones not sure if this should be an array or a single entry but it can be null in any case
-  photos          = db.Column(sqlalchemy.types.ARRAY(db.String(128)))
+  photos          = db.Column(sqlalchemy.types.ARRAY(db.String(128)), nullable=False)
 
 
   def __init__(self, **kwargs):
