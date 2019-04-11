@@ -10,10 +10,10 @@ class Place(Base):
   # (Josh): @Sones just do a consistent format for state -- either California(full name) or CA (abbreviated)
   # Do whatever is easier for you (I think abbreviated might be easier since you could grab from the address)
   state           = db.Column(db.String(128), nullable =False) 
-  lat             = db.Column(db.Integer, nullable =False) 
-  lng             = db.Column(db.Integer, nullable =False) 
+  lat             = db.Column(db.Float, nullable =False) 
+  lng             = db.Column(db.Float, nullable =False) 
   reviews         = db.Column(sqlalchemy.types.ARRAY(db.String(128)))
-  ratings         = db.Column(db.Integer, nullable=False)
+  ratings         = db.Column(db.Float, nullable=False)
   types           = db.Column(sqlalchemy.types.ARRAY(db.String(128)))
   # (Josh): @Sones not sure if this should be an array or a single entry but it can be null in any case
   photos          = db.Column(sqlalchemy.types.ARRAY(db.String(128)))
