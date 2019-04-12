@@ -2,21 +2,20 @@ from . import *
 import sqlalchemy
 
 class Place(Base):
-  __tablename__ = 'Places'
-
-  name            = db.Column(db.String(128), nullable =False)
-  address         = db.Column(db.String(128), nullable =False)
-  coast           = db.Column(db.String(128), nullable =False) # East or West
+  __tablename__ = 'places'
+  name            = db.Column(db.String(), nullable =True)
+  address         = db.Column(db.String(), nullable =True)
+  coast           = db.Column(db.String(128), nullable =True) # East or West
   # (Josh): @Sones just do a consistent format for state -- either California(full name) or CA (abbreviated)
   # Do whatever is easier for you (I think abbreviated might be easier since you could grab from the address)
-  state           = db.Column(db.String(128), nullable =False) 
-  lat             = db.Column(db.Float, nullable =False) 
-  lng             = db.Column(db.Float, nullable =False) 
-  reviews         = db.Column(sqlalchemy.types.ARRAY(db.String(128)))
-  ratings         = db.Column(db.Float, nullable=False)
-  types           = db.Column(sqlalchemy.types.ARRAY(db.String(128)))
+  state           = db.Column(db.String(128), nullable =True) 
+  lat             = db.Column(db.Float, nullable =True) 
+  lng             = db.Column(db.Float, nullable =True) 
+  reviews         = db.Column(sqlalchemy.types.ARRAY(db.Text()))
+  ratings         = db.Column(db.Float, nullable=True)
+  types           = db.Column(sqlalchemy.types.ARRAY(db.String()))
   # (Josh): @Sones not sure if this should be an array or a single entry but it can be null in any case
-  photos          = db.Column(sqlalchemy.types.ARRAY(db.String(128)), nullable=False)
+  photos          = db.Column(sqlalchemy.types.ARRAY(db.String()), nullable=True)
 
 
   def __init__(self, **kwargs):
