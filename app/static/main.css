@@ -12,7 +12,8 @@ body {
 padding-top: 15%;
 padding-bottom: 15px;
 }
-.global-search {
+.global-search,
+.centered {
 text-align:center;
 padding:10px;
 }
@@ -31,8 +32,33 @@ right:2%;
 }
 .btn{
 background-color: #4285F4;
-border: none
+border: none;
 }
 .step-links a{
 color: #4285F4;
+}
+
+.container {
+    display: flex;
+    width: 90%;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#map {
+    margin: 0 auto;
+    width: 400px;
+    height: 400px;
+}
+
+#results {
+    width: 400px;
+    height: 400px;
+}
+
+#reset {
+width: 30%;}
+.category{
+  color: red;
 }

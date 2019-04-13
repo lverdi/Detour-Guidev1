@@ -4,7 +4,7 @@ import googlemaps
 import gmaps
 import csv
 import pickle 
-
+import time
 
 from datetime import datetime
 from googleplaces import GooglePlaces, types, lang
@@ -37,13 +37,14 @@ def computeDistanceLatLong(lat1, lon1, lat2, lon2):
 	return distance
 
 ######## 1 BEGINNING GENERATING NEARBY LOCATIONS ##############
-def printNearbySearchDetails(location, waypoint, radius, types=None, keyword=None, rankby='prominence'):
+def getNearbySearchDetails(location, waypoint, radius, types=None, keyword=None, rankby='prominence'):
 	"""
 	Generates details of places nearby your location
 
+
 	Args:
         location -- A human readable location, e.g 'London, England' (default None)
-        waypoing -- tuple containing lat long of the waypoint used for nearby search
+        waypoint -- tuple containing lat long of the waypoint used for nearby search
 		keyword  -- A term to be matched against all available fields, including
 	                   but not limited to name, type, and address (default None)
 	    radius   -- The radius (in meters) around the location/lat_lng to restrict
@@ -74,8 +75,8 @@ def printNearbySearchDetails(location, waypoint, radius, types=None, keyword=Non
 	# will be send as type param to fullfil:
 	# http://googlegeodevelopers.blogspot.com.au/2016/02/changes-and-quality-improvements-in_16.html
 
-	if query_result.has_attributions:
-		print(query_result.html_attributions)
+	# if query_result.has_attributions:
+	# 	print(query_result.html_attributions)
 	
 	# Array of dictionaries for writing to csv
 	rst = []
@@ -84,18 +85,24 @@ def printNearbySearchDetails(location, waypoint, radius, types=None, keyword=Non
 		d = {}
 		result_count+=1
 	# 	# Returned places from a query are place summaries.
-		print("**************")
-		print("Place name: ", place.name)
+		# print("**************")
+		# print("Place name: ", place.name)
 		
 		d["name"] = place.name
 
+		gmap = googlemaps.Client(key="AIzaSyB4UtBsSLm1kkkmYh7zONJ3iv6_4a2j0Og")
 		geo_loc = place.geo_location
 
+		#d["address"] = gmap.reverse_geocode((geo_loc['lat'], geo_loc['lng']))
+		d["lat"] = geo_loc['lat']
+		d["long"] = geo_loc['lng']
+
 		# Computes distance to waypoints
-		d["distance"] = computeDistanceLatLong(waypoint[0], waypoint[1], 
-												float(geo_loc['lat']), float(geo_loc['lng']))
-	# 	print(place.geo_location)
-	# 	print(place.place_id)
+		# d["distance"] = computeDistanceLatLong(waypoint[0], waypoint[1], 
+		# 										float(geo_loc['lat']), float(geo_loc['lng']))
+
+		# print(place.geo_location)
+		# print(place.place_id)
 
 	# 	# The following method has to make a further API call.
 		place.get_details()
@@ -104,31 +111,34 @@ def printNearbySearchDetails(location, waypoint, radius, types=None, keyword=Non
 		#print("Place details: ", place.details) # A dict matching the JSON response from Google.
 		
 		curr_reviews = []
-		print("Place types: " , place.types)
-		d["types"] = place.types
-		try: 
-			print("Place rating: ", place.rating)
-			d["rating"] = float(place.rating)
-		except: 
-			print("No ratings found for: ", place.name)
-			d["rating"] = None
+		# print("Place types: " , place.types)
+		#d["types"] = place.types
+		# try: 
+		# 	# print("Place rating: ", place.rating)
+		# 	d["rating"] = float(place.rating)
+		# except: 
+		# 	# print("No ratings found for: ", place.name)
+		# 	d["rating"] = None
 
-		try:
-			print("Place reviews: ", place.details["reviews"])
-			for review in place.details["reviews"]:
-				print("Author name: ", review["author_name"])
-				print("Relative Time Description: ", review["relative_time_description"])
-				print("Text: ", review["text"])
-				print("Reviewer Rating: ", review["rating"])
-				print("--------")
-				curr_reviews.append({"author_name" : review["author_name"], 
-									"relative_time_description" : review["relative_time_description"],
-									"rating" : review["rating"], "text" : review["text"]})
-			d["reviews"] = curr_reviews
+		# try:
+		# 	# print("Place reviews: ", place.details["reviews"])
+		# 	for review in place.details["reviews"]:
+		# 		# print("Author name: ", review["author_name"])
+		# 		# print("Relative Time Description: ", review["relative_time_description"])
+		# 		# print("Text: ", review["text"])
+		# 		# print("Reviewer Rating: ", review["rating"])
+		# 		# print("--------")
+		# 		curr_reviews.append({"author_name" : review["author_name"], 
+		# 							"relative_time_description" : review["relative_time_description"],
+		# 							"rating" : review["rating"], "text" : review["text"]})
 
-		except:
-			print("No reviews found for: ", place.name)	
-			d["reviews"] = []
+		# 	# May want to add this back for review information
+		# 	# d["reviews"] = curr_reviews
+
+		# except:
+		# 	# print("No reviews found for: ", place.name)	
+		# 	# d["reviews"] = []
+		# 	pass
 
 		rst.append(d)
 
@@ -186,9 +196,9 @@ def printNearbySearchDetails(location, waypoint, radius, types=None, keyword=Non
 ######## 1 END GENERATING NEARBY LOCATIONS ##############
 
 ######## 4 BEGINNING GENERATING DIRECTIONS ##############
-def generateSearchResults(start_addr, end_addr, filename ,
+def generateSearchResults(start_addr, end_addr, filename=None,
 						  keyword=None, radius=10000, 
-						  types=["museum"], rankby='prominence'):
+						  types=None, rankby='prominence'):
 	"""
 	Generates nearby search results every 30 miles along a given route
 	
@@ -237,12 +247,17 @@ def generateSearchResults(start_addr, end_addr, filename ,
 	waypoints = [] # tuples of (lat, lng)
 	polylines = [] # Array of polylines -- can be used for display if we like
 
+	# TODO: Should try to include the start and end locations every time we perform a nearby_search
+	#		So while checking total_distance - prev_distance we also should just automatically add the first 
+	# 		and last waypoint
 	for entry in waypoint_dict:
 		total_distance += entry["distance"]["value"]
 		total_duration += entry["duration"]["value"]
 
 		# Only include waypoints every 20-30 miles
-		if total_distance - prev_distance > 45000: 
+		# TODO: the number of waypoints should be constant and should be based on overall
+		#		trip distance
+		if total_distance - prev_distance > 10000: 
 			lat = entry["start_location"]["lat"]
 			lng = entry["start_location"]["lng"]
 			waypoints.append((lat, lng))
@@ -253,26 +268,31 @@ def generateSearchResults(start_addr, end_addr, filename ,
 
 			# TODO: INCLUDE ARGUMENT THAT TAKES WAYPOINT LAT LNG AND COMPUTES DISTANCE FROM
 			# 		THAT WAYPOINT TO THE PATH
-			rst = rst + printNearbySearchDetails(location, (lat,lng), radius, types, keyword, rankby)
+			rst = rst + getNearbySearchDetails(location, (lat,lng), radius, types, keyword, rankby)
 		
 		polylines.append(entry["polyline"]["points"])
 
-	print("Number of waypoints: ", waypoints)	
-	print("There are {} results".format(result_count))
+	# print("Number of waypoints: ", waypoints)	
+	# print("There are {} results".format(result_count))
 
 
 	# If you wanna save results dump em in a pickle
 	# with open('gapiPathPickle', 'wb') as f:
 	# 	pickle.dump(rst, f )
 
-	with open(filename,'w') as f:
-		dw = csv.DictWriter(f,rst[0].keys())
-		dw.writeheader()
-		dw.writerows(rst)
+	# with open(filename,'w') as f:
+	# 	dw = csv.DictWriter(f,rst[0].keys())
+	# 	dw.writeheader()
+	# 	dw.writerows(rst)
 	return rst
 
 
-start_addr = "Ithaca, NY"
-end_addr   = "17 Wakefield Court, Shrewsbury NJ"
+# if __name__ == '__main__':
+	
+# 	start_time = time.time()
+# 	start_addr = "17 Wakefield Court, Shrewsbury NJ"
+# 	end_addr   = "Pittsburgh, PA"
 
-generateSearchResults(start_addr, end_addr, "pathData.csv")
+# 	# Uncomment this to run the file
+# 	generateSearchResults(start_addr, end_addr, "pathData.csv", keyword="adventure")
+# 	print("Time to generate results: ", time.time() - start_time)

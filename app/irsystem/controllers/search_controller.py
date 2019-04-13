@@ -1,22 +1,38 @@
 from . import *  
 from app.irsystem.models.helpers import *
 from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
+from app.irsystem import googleMapsAPIPOC 
 
-project_name = "DeTour Guide"
-net_id = "Josh Even (jre83), Josh Sones (js2572), Adomas Hassan (ah667), Jesse Salazar (js2928), Luis Verde (lev27)"
+import googlemaps 
+
+project_name = "De-Tour Guide"
+net_id = "Josh Even (jre83), Josh Sones (js2572), Adomas Hassan (ah667), Jesse Salazar (js2928), Luis Verdi (lev27)"
+API_KEY = "AIzaSyB4UtBsSLm1kkkmYh7zONJ3iv6_4a2j0Og"
+client = googlemaps.Client(API_KEY)
+
+def getLatLong(origin, destination):
+	origin_gc = client.geocode(origin)[0]['geometry']['location']
+	origin_coords = (origin_gc['lat'], origin_gc['lng'])
+	dest_gc = client.geocode(destination)[0]['geometry']['location']
+	dest_coords = (dest_gc['lat'], dest_gc['lng'])
+	return [origin_coords, dest_coords]
 
 @irsystem.route('/', methods=['GET'])
 def search():
-	query = request.args.get('search')
-	if not query:
+	origin = request.args.get('origin')
+	destination = request.args.get('dest')
+	if not (origin and destination):
 		data = []
 		output_message = ''
+		results = []
 	else:
-		output_message = "Your search: " + query
-		data = range(5)
+		output_message = "Your search: " + origin + " to " + destination
+		data = getLatLong(origin, destination)
+		# this is where the results get populated in
+		print("getting results")
+		results = googleMapsAPIPOC.generateSearchResults(origin, destination)
 
-	output_message = "Result of query"
-	return render_template('search.html', name=project_name, netid=net_id, output_message=output_message, data=data)
+	return render_template('search.html', name=project_name, netid=net_id, output_message=output_message, data=data, results=results)
 
 
 
