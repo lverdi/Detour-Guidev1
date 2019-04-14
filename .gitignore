@@ -6,3 +6,4 @@ vagrant/site.retry
 vagrant/a4keypair.pem
 .env
 env.bat
+*.DS_Store
