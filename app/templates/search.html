@@ -1,86 +1,98 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <meta charset = "UTF-8">
-        <link rel="stylesheet" href="/static/bootstrap.min.css">
-        <link rel="stylesheet" href="/static/main.css">
-        <title>De-Tour Guide</title>
-        <script src="/static/js/maps.js"></script>
-    </head>
-    <body>
-        <div class="topcorner">
-            <p>Project Name: {{ name }}</p>
-            <p>Student Name: ({{ netid }})</p>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/main.css">
+    <title>De-Tour Guide</title>
+    <script src="/static/js/maps.js"></script>
+</head>
+
+<body>
+    <div class="topcorner">
+        <p>Project Name: {{ name }}</p>
+        <p>Student Name: ({{ netid }})</p>
+    </div>
+    <form class="form-inline global-search" method="POST">
+
+        <h1 style="font-size: 55px; font-family:Futura; color: #4285F4">
+            {{ name }}
+        </h1>
+
+        <br><br>
+
+        <div class="form-group">
+            <input type="text" name="origin" class="form-control input" placeholder="Origin" required>
         </div>
-        <form class="form-inline global-search">
-
-            <h1 style="font-size: 55px; font-family:Futura; color: #4285F4">
-                {{ name }}
-            </h1>
-
-            <br><br>
-
-            <div class="form-group">
-                <input type="text" name="origin" class="form-control input" placeholder="Origin">
-            </div>
-            <br>
-            <div class="form-group">
-                <input type="text" name="dest" class="form-control input" placeholder="Destination">
-            </div>
-            <br>
-            <br>
-            <h2> What would you like to see?</h2>
-            <br>
-            <div class ="form-group categories" style = "padding: 20px; text-align: left">
-              <input class = "category" type="checkbox" name="category" value="amusement_park"> Amusement Park<br>
-              <input class = "category" type="checkbox" name="category" value="aquarium"> Aquarium<br>
-              <input class = "category" type="checkbox" name="category" value="art_gallery"> Art Gallery<br>
-              <input class = "category" type="checkbox" name="category" value="campground"> Campground<br>
-              <input class = "category" type="checkbox" name="category" value="casino"> Casino<br>
-              <input class = "category" type="checkbox" name="category" value="museum"> Museum<br>
-              <input class = "category" type="checkbox" name="category" value="park"> Park<br>
-              <input class = "category" type="checkbox" name="category" value="restaurant"> Restaurant<br>
-              <input class = "category" type="checkbox" name="category" value="stadium"> Stadium<br>
-              <input class = "category" type="checkbox" name="category" value="zoo"> Zoo<br>
-            </div>
-            <br>
-            <button type="submit" class="btn btn-info"> Go! </button>
-        </form>
-        <div class="centered">
+        <br>
+        <div class="form-group">
+            <input type="text" name="dest" class="form-control input" placeholder="Destination" required>
+        </div>
+        <br>
+        <h2> Please Describe What You're Looking For </h2>
+        <br>
+        <h4> (Separate each aspect with a comma) </h4>
+        <br>
+        <div class="form-group">
+            <input type="text" name="description" maxlength="200"
+                placeholder="ex. 'Family friendly, delicious seafood, zoo with elephants'" style="margin-top: 10px"
+                size="60" required>
+        </div>
+        <br>
+        <br>
+        <h2> What would you like to see?</h2>
+        <br>
+        <div class="form-group categories" style="padding: 20px; text-align: left">
+            <input class="category" type="checkbox" name="category" value="amusement_park"> Amusement Park<br>
+            <input class="category" type="checkbox" name="category" value="aquarium"> Aquarium<br>
+            <input class="category" type="checkbox" name="category" value="art_gallery"> Art Gallery<br>
+            <input class="category" type="checkbox" name="category" value="campground"> Campground<br>
+            <input class="category" type="checkbox" name="category" value="casino"> Casino<br>
+            <input class="category" type="checkbox" name="category" value="museum"> Museum<br>
+            <input class="category" type="checkbox" name="category" value="park"> Park<br>
+            <input class="category" type="checkbox" name="category" value="restaurant"> Restaurant<br>
+            <input class="category" type="checkbox" name="category" value="stadium"> Stadium<br>
+            <input class="category" type="checkbox" name="category" value="zoo"> Zoo<br>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-info"> Go! </button>
+    </form>
+    <div class="centered">
         {% if data and results %}
-            <h1>{{output_message}}</h1>
-            <h3 id="time"></h3>
-            <h3 id="distance"></h3>
-            {% for d in data %}  
-                <script>
-                    coords.push(
-                        {
-                            lat : parseFloat('{{ d[0] }}'),
-                            lng : parseFloat('{{ d[1] }}')
-                        }
-                    )
-                </script>
-            {% endfor %}
-            <script async defer
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4UtBsSLm1kkkmYh7zONJ3iv6_4a2j0Og&callback=initMap">
+        <h1>{{output_message}}</h1>
+        <h3 id="time"></h3>
+        <h3 id="distance"></h3>
+        {% for d in data %}
+        <script>
+            coords.push(
+                {
+                    lat: parseFloat('{{ d[0] }}'),
+                    lng: parseFloat('{{ d[1] }}')
+                }
+            )
+        </script>
+        {% endfor %}
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4UtBsSLm1kkkmYh7zONJ3iv6_4a2j0Og&callback=initMap">
             </script>
-        </div>
-        <div class="container">
-            <div id="map"></div>
-            <table id="results">
-                {% for r in results %}
-                    <tr onclick="updateMap(parseFloat('{{ r.lat }}'), parseFloat('{{ r.long }}'))">
-                        <td>{{ r.name }}</td>
-                        <td>{{ r.lat }}</td>
-                        <td>{{ r.long }}</td>
-                    </tr>
-                {% endfor %}
-            </table>
-            <button id="reset" class="btn btn-info" onclick="updateMap()"> Reset Map </button>
+    </div>
+    <div class="container">
+        <div id="map"></div>
+        <table id="results">
+            {% for r in results %}
+            <tr onclick="updateMap(parseFloat('{{ r.lat }}'), parseFloat('{{ r.long }}'))">
+                <td>{{ r.name }}</td>
+                <td>{{ r.lat }}</td>
+                <td>{{ r.long }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <button id="reset" class="btn btn-info" onclick="updateMap()"> Reset Map </button>
 
-        </div>
-        {% endif %}
-    </body>
+    </div>
+    {% endif %}
+</body>
 
 </html>
