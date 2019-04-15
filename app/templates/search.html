@@ -61,6 +61,10 @@
         <br>
         <button type="submit" class="btn btn-info"> Go! </button>
     </form>
+    <!-- Delete this later. Just printing for now. -->
+    {% for item in results %}
+        <p> {{ item }} </p>
+    {% endfor %}
     <div class="centered">
         {% if data and results %}
         <h1>{{output_message}}</h1>
@@ -80,6 +84,7 @@
             src="https://maps.googleapis.com/maps/api/js?key="+{{api_key}}+"&callback=initMap">
             </script>
     </div>
+    
     <div class="container">
         <div id="map"></div>
         <table id="results">

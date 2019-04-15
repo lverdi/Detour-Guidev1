@@ -25,14 +25,12 @@ def getLatLong(origin, destination):
 def search():
 	origin = request.args.get('origin')
 	destination = request.args.get('dest')
-	print(origin, destination)
 	
 	# TODO:
 	# queries = request.arges.get('queries')
 	queries = ["family friendly museum"]
 	
 	if not (origin and destination):
-		print("HERE")
 		data = []
 		output_message = ''
 		results = []
@@ -45,7 +43,6 @@ def search():
 			inv_idx_reviews,idf_reviews,doc_norms_reviews,inv_idx_types,idf_types,doc_norms_types, review_to_places, places_to_details = pickle.load(f)
 		
 		waypoints = rr.generateWaypoints(origin, destination)
-		print(waypoints)
 		results = []
 		
 		for query in queries:
@@ -54,7 +51,6 @@ def search():
 			ranked_rst = rr.computeScores(waypoints, index_search_rst_reviews, index_search_rst_types, review_to_places, places_to_details)
 			results = ranked_rst[:10]
 	
-	print(results)
 
 	return render_template('search.html', name=project_name, netid=net_id, output_message=output_message, data=data, results=results, api_key=API_KEY)
 
