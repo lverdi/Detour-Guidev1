@@ -296,7 +296,7 @@ def computeScores(waypoints, index_search_rst_reviews, index_search_rst_types,
         count = place_scores_and_counts[k][1]
         
         # TODO: Include distance in our score -- place_distances[k] -- in some way
-        final_rst[k]['score'] = (score / count)
+        final_rst[k]['score'] = (place_distances[k]*score / count)
         final_rst[k]['lat'] = places_to_details[k]['lat']
         final_rst[k]['long'] = places_to_details[k]['lng']
         final_rst[k]['address'] = places_to_details[k]['address']
