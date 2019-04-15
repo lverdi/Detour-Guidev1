@@ -17,7 +17,7 @@
     </div>
 
     <!-- Replace action here with the path of the file that will be used to parse it -->
-    <form action="FILEPATH_HERE" class="form-inline global-search" method="POST">
+    <form class="form-inline global-search">
 
         <h1 style="font-size: 55px; font-family:Futura; color: #4285F4">
             {{ name }}
@@ -38,7 +38,7 @@
         <h4> (Separate each aspect with a comma) </h4>
         <br>
         <div class="form-group">
-            <input type="text" name="description" maxlength="200"
+            <input type="text" name="description" maxlength="200" class="form_control input"
                 placeholder="ex. 'Family friendly, delicious seafood, zoo with elephants'" style="margin-top: 10px"
                 size="60" required>
         </div>
@@ -77,7 +77,7 @@
         </script>
         {% endfor %}
         <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4UtBsSLm1kkkmYh7zONJ3iv6_4a2j0Og&callback=initMap">
+            src="https://maps.googleapis.com/maps/api/js?key="+{{api_key}}+"&callback=initMap">
             </script>
     </div>
     <div class="container">
