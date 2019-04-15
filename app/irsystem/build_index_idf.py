@@ -3,10 +3,7 @@ import os, sys
 import googlemaps
 from nltk.tokenize import TreebankWordTokenizer
 import numpy as np
-try:
-    import cPickle as pickle
-except:
-    import pickle
+import pickle
 
 def trimReviews(initial_reviews):
     initial_reviews = initial_reviews.split("\"")
@@ -228,10 +225,11 @@ def make_pickle(file):
     idf_types     = compute_idf(inv_idx_types, len(all_types))
     doc_norms_types = compute_doc_norms(inv_idx_types, idf_types, len(all_types))
     
-    index_idf_norms = [inv_idx_reviews,idf_reviews,doc_norms_reviews,inv_idx_types,idf_types,doc_norms_types]
+    pickled_data = [inv_idx_reviews,idf_reviews,doc_norms_reviews,inv_idx_types,idf_types,doc_norms_types,
+                    review_to_places, places_to_details]
 
-    with open('index_idf_norm_data','wb') as f:
-        pickle.dump(index_idf_norms,f)
+    with open('pickled_data','wb') as f:
+        pickle.dump(pickled_data,f)
     
     
     

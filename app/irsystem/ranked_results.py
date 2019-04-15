@@ -1,6 +1,10 @@
 import csv
 import os, sys
 import googlemaps
+from nltk.tokenize import TreebankWordTokenizer
+from datetime import datetime
+import numpy as np
+from math import sin, cos, sqrt, atan2, radians
 
 def computeDistanceLatLong(lat1, lon1, lat2, lon2):
 	"""
@@ -204,7 +208,7 @@ def computeScores(waypoints, index_search_rst_reviews, index_search_rst_types,
         if k in index_search_rst_types:
             overlap_ids.add(k)
     
-    print(overlap_ids)
+    #print(overlap_ids)
     
     # We have sufficient reviews with overlapping types
     if len(overlap_ids) > 20:
