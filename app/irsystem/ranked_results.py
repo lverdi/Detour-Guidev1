@@ -291,12 +291,19 @@ def computeScores(waypoints, index_search_rst_reviews, index_search_rst_types,
         
     final_rst = {} # Mapping of place to final score -- including distance
     for k in place_scores_and_counts:
+        final_rst[k] = {}
         score = place_scores_and_counts[k][0]
         count = place_scores_and_counts[k][1]
         
         # TODO: Include distance in our score -- place_distances[k] -- in some way
-        final_rst[k] = (score / count)
-
-    return sorted(final_rst.items(), key=lambda kv: kv[1], reverse=True)
+        final_rst[k]['score'] = (score / count)
+        final_rst[k]['lat'] = places_to_details[k]['lat']
+        final_rst[k]['long'] = places_to_details[k]['lng']
+        try:
+            final_rst[k]['review'] = places_to_details[k]['reviews'][0]
+        except:
+            final_rst[k]['review'] = ['No reviews found.']
+    
+    return sorted(final_rst.items(), key=lambda kv: kv[1]['score'], reverse=True)
 
     
