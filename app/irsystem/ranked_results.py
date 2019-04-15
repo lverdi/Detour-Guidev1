@@ -299,6 +299,8 @@ def computeScores(waypoints, index_search_rst_reviews, index_search_rst_types,
         final_rst[k]['score'] = (score / count)
         final_rst[k]['lat'] = places_to_details[k]['lat']
         final_rst[k]['long'] = places_to_details[k]['lng']
+        final_rst[k]['address'] = places_to_details[k]['address']
+        final_rst[k]['rating'] = places_to_details[k]['ratings']
         try:
             final_rst[k]['review'] = places_to_details[k]['reviews'][0]
         except:
