@@ -28,7 +28,7 @@ def search():
 	
 	# TODO:
 	# queries = request.arges.get('queries')
-	queries = ["family friendly museum"]
+	queries = ["acquatic center"]
 	
 	if not (origin and destination):
 		data = []
@@ -47,9 +47,10 @@ def search():
 		
 		for query in queries:
 			index_search_rst_reviews = rr.index_search(query, inv_idx_reviews, idf_reviews, doc_norms_reviews)
+			print(index_search_rst_reviews)
 			index_search_rst_types = rr.index_search(query, inv_idx_types, idf_types, doc_norms_types)
 			ranked_rst = rr.computeScores(waypoints, index_search_rst_reviews, index_search_rst_types, review_to_places, places_to_details)
-			results = ranked_rst[:10]
+			results.append(ranked_rst[:10])
 	
 
 	return render_template('search.html', name=project_name, netid=net_id, output_message=output_message, data=data, results=results, api_key=API_KEY)
