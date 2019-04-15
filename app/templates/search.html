@@ -84,11 +84,11 @@
     <div class="container">
         <div id="map"></div>
         <table id="results">
-            {% for r in results %}
-            <tr onclick="updateMap(parseFloat('{{ r.lat }}'), parseFloat('{{ r.long }}'))">
-                <td>{{ r.name }}</td>
-                <td>{{ r.lat }}</td>
-                <td>{{ r.long }}</td>
+            {% for (name, details) in results[0] %}
+            <tr onclick="updateMap(parseFloat('{{ details.lat }}'), parseFloat('{{ details.long }}'))">
+                <td>{{ name }}</td>
+                <td>{{ details.lat }}</td>
+                <td>{{ details.long }}</td>
             </tr>
             {% endfor %}
         </table>
