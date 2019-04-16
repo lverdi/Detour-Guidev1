@@ -52,7 +52,10 @@ function initMap() {
 function updateMap(lat = null, long = null) {
   if (lat == null && long == null) {
     // Reset button clicked
-    wypts = []
+    wypts = [];
+    $("#result" + activeRow).removeClass("active");
+    $("#detail" + activeRow).css("display", "none");
+    activeRow = "";
   } else {
     wypts = [{
       location: {

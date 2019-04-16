@@ -76,9 +76,16 @@ color: #4285F4;
     transition: all 1s;
 }
 
+.result-name {
+    font-weight: bold;
+}
+
 .result.active {
-    height: 100px;
     transition: all 1s;
+}
+
+.detail {
+    display: none;
 }
 
 #reset {
