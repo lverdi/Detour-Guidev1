@@ -9,6 +9,7 @@
     <title>De-Tour Guide</title>
     <script src="/static/js/maps.js"></script>
     <script src="/static/js/results.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -43,10 +44,11 @@
         <h5>How far would you like to deviate from the path?</h5>
         <br>
         <select name="distance">
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-            <option value="40">40</option>
+            <option value="3000">No Limit!</option>
+            <option value="100">100</option>
+            <option value="75">75</option>
+            <option value="50">50</option>
+            <option value="25">25</option>
           </select>
         <br>
         <br>
@@ -74,13 +76,20 @@
     
     <div class="container">
         <div id="map"></div>
-        <table id="results">
-            {% for (name, details) in results[0] %}
-            <tr onclick="updateMap(parseFloat('{{ details.lat }}'), parseFloat('{{ details.long }}'))" class="result">
-                <td>{{ name }}</td>
-            </tr>
-            {% endfor %}
-        </table>
+        <div id="results-container">
+            <table id="results">
+                {% for (name, details) in results[0] %}
+                <tr onclick="updateMap(parseFloat('{{ details.lat }}'), parseFloat('{{ details.long }}')); 
+                            toggle('#result{{loop.index0}}')" class="result" id="result{{ loop.index0 }}">
+                    <td>
+                        <div>
+                            {{ name }}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
         <button id="reset" class="btn btn-info" onclick="updateMap()"> Reset Map </button>
 
     </div>
