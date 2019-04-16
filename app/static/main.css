@@ -56,6 +56,7 @@ color: #4285F4;
     position: relative;
     width: 50%;
     height: 400px;
+    overflow: scroll;
 }
 
 #results {
@@ -81,7 +82,7 @@ color: #4285F4;
 }
 
 .result.active {
-    transition: all 1s;
+    background-color: #B8B8B8;
 }
 
 .detail {
