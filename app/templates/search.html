@@ -8,13 +8,10 @@
     <link rel="stylesheet" href="/static/main.css">
     <title>De-Tour Guide</title>
     <script src="/static/js/maps.js"></script>
+    <script src="/static/js/results.js"></script>
 </head>
 
 <body>
-    <div class="topcorner">
-        <p>Project Name: {{ name }}</p>
-        <p>Student Name: ({{ netid }})</p>
-    </div>
 
     <!-- Replace action here with the path of the file that will be used to parse it -->
     <form class="form-inline global-search">
@@ -43,21 +40,15 @@
                 size="60" required>
         </div>
         <br>
+        <h5>How far would you like to deviate from the path?</h5>
         <br>
-        <h2> What would you like to see?</h2>
+        <select name="distance">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+          </select>
         <br>
-        <div class="form-group categories" style="padding: 20px; text-align: left">
-            <input class="category" type="checkbox" name="category" value="amusement_park"> Amusement Park<br>
-            <input class="category" type="checkbox" name="category" value="aquarium"> Aquarium<br>
-            <input class="category" type="checkbox" name="category" value="art_gallery"> Art Gallery<br>
-            <input class="category" type="checkbox" name="category" value="campground"> Campground<br>
-            <input class="category" type="checkbox" name="category" value="casino"> Casino<br>
-            <input class="category" type="checkbox" name="category" value="museum"> Museum<br>
-            <input class="category" type="checkbox" name="category" value="park"> Park<br>
-            <input class="category" type="checkbox" name="category" value="restaurant"> Restaurant<br>
-            <input class="category" type="checkbox" name="category" value="stadium"> Stadium<br>
-            <input class="category" type="checkbox" name="category" value="zoo"> Zoo<br>
-        </div>
         <br>
         <button type="submit" class="btn btn-info"> Go! </button>
     </form>
@@ -85,10 +76,8 @@
         <div id="map"></div>
         <table id="results">
             {% for (name, details) in results[0] %}
-            <tr onclick="updateMap(parseFloat('{{ details.lat }}'), parseFloat('{{ details.long }}'))">
+            <tr onclick="updateMap(parseFloat('{{ details.lat }}'), parseFloat('{{ details.long }}'))" class="result">
                 <td>{{ name }}</td>
-                <td>{{ details.lat }}</td>
-                <td>{{ details.long }}</td>
             </tr>
             {% endfor %}
         </table>

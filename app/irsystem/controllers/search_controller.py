@@ -25,11 +25,11 @@ def getLatLong(origin, destination):
 def search():
 	origin = request.args.get('origin')
 	destination = request.args.get('dest')
-	
-	# TODO:
-	# queries = request.arges.get('queries')
-	queries = ["acquatic center"]
-	
+	try:
+		queries = request.args.get('description').split(',')
+	except:
+		queries = [""]
+
 	if not (origin and destination):
 		data = []
 		output_message = ''
@@ -47,10 +47,10 @@ def search():
 		
 		for query in queries:
 			index_search_rst_reviews = rr.index_search(query, inv_idx_reviews, idf_reviews, doc_norms_reviews)
-			print(index_search_rst_reviews)
 			index_search_rst_types = rr.index_search(query, inv_idx_types, idf_types, doc_norms_types)
 			ranked_rst = rr.computeScores(waypoints, index_search_rst_reviews, index_search_rst_types, review_to_places, places_to_details)
 			results.append(ranked_rst[:10])
+		print(results)
 	
 
 	return render_template('search.html', name=project_name, netid=net_id, output_message=output_message, data=data, results=results, api_key=API_KEY)

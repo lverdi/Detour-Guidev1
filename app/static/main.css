@@ -9,7 +9,7 @@ padding: 20px 0;
 text-align:center;
 }
 body {
-padding-top: 15%;
+padding-top: 7%;
 padding-bottom: 15px;
 }
 .global-search,
@@ -62,11 +62,15 @@ color: #4285F4;
     display: block;
 }
 
-#results tr {
+.result {
     display: block;
     background-color: lightgray;
     padding: 9px 17px;
     box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.1);
+}
+
+.result.active {
+    
 }
 
 #reset {
