@@ -1,7 +1,7 @@
 from . import *  
 from app.irsystem.models.helpers import *
 from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
-import os
+import os, sys
 from app.irsystem import ranked_results as rr
 
 from googleplaces import types
@@ -29,6 +29,11 @@ def search():
 		queries = request.args.get('description').split(',')
 	except:
 		queries = [""]
+	try:
+		max_dist = int(request.args.get('distance'))
+	except:
+		max_dist = 3000
+	
 
 	if not (origin and destination):
 		data = []
@@ -48,7 +53,7 @@ def search():
 		for query in queries:
 			index_search_rst_reviews = rr.index_search(query, inv_idx_reviews, idf_reviews, doc_norms_reviews)
 			index_search_rst_types = rr.index_search(query, inv_idx_types, idf_types, doc_norms_types)
-			ranked_rst = rr.computeScores(waypoints, index_search_rst_reviews, index_search_rst_types, review_to_places, places_to_details)
+			ranked_rst = rr.computeScores(waypoints, index_search_rst_reviews, index_search_rst_types, review_to_places, places_to_details, max_dist=max_dist)
 			results.append(ranked_rst[:10])
 		print(results)
 	

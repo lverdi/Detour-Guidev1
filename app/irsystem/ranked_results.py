@@ -179,7 +179,7 @@ def index_search(query, index, idf, doc_norms, tokenizer=TreebankWordTokenizer()
     return rst
 
 def computeScores(waypoints, index_search_rst_reviews, index_search_rst_types, 
-                  review_to_places, places_to_details):
+                  review_to_places, places_to_details, max_dist):
     """
     Takes scores that we get from our index search against types and reviews and computes
     distances between each place to rank our results
@@ -291,11 +291,15 @@ def computeScores(waypoints, index_search_rst_reviews, index_search_rst_types,
         
     final_rst = {} # Mapping of place to final score -- including distance
     for k in place_scores_and_counts:
+        if 1/place_distances[k] > max_dist:
+            continue
         final_rst[k] = {}
         score = place_scores_and_counts[k][0]
         count = place_scores_and_counts[k][1]
         
         # TODO: Include distance in our score -- place_distances[k] -- in some way
+        
+        
         final_rst[k]['score'] = (place_distances[k]*score / count)
         final_rst[k]['lat'] = places_to_details[k]['lat']
         final_rst[k]['long'] = places_to_details[k]['lng']
